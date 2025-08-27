@@ -19,7 +19,8 @@ export default function Home() {
                         body: JSON.stringify({ description: data.weather[0].description, temp: data.main.temp })
                     });
                     const fantasy = await fantasyRes.json();
-                    setFantasyWeather(fantasy.text);
+
+                    setFantasyWeather(fantasy.result);
                 });
             }
         }
