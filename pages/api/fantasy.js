@@ -1,7 +1,14 @@
 import OpenAI from "openai";
 
+const apiKey = process.env.OPENAI_API_KEY;
+
+if (!apiKey) {
+    console.error("Missing OPENAI_API_KEY in environment variables");
+    return res.status(500).json({ error: "Server misconfigured: missing API key" });
+}
+
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: apiKey,
 });
 
 export default async function handler(req, res) {
