@@ -2,25 +2,25 @@ import OpenAI from "openai";
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-if (!apiKey) {
-    console.error("Missing OPENAI_API_KEY in environment variables");
-    return res.status(500).json({ error: "Server misconfigured: missing API key" });
-}
-
 const openai = new OpenAI({
     apiKey: apiKey,
 });
 
 export default async function handler(req, res) {
+    if (!apiKey) {
+        console.error("Missing OPENAI_API_KEY in environment variables");
+        return res.status(500).json({ error: "Server misconfigured: missing API key" });
+    }
+
     if (req.method !== "POST") {
-        return res.status(405).json({ error: "Method not allowed" });
+        res.status(405).json({ error: "Method not allowed" });
     }
 
     const { description, temp } = req.body;
     const prompt = `Rewrite this weather in a fantasy wizardly style:\nWeather: ${description}, Temp: ${temp}°C`;
 
     if (!prompt) {
-        return res.status(400).json({ error: "Prompt is required" });
+        res.status(400).json({ error: "Prompt is required" });
     }
 
     try {
