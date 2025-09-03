@@ -10,13 +10,13 @@ export default function Home() {
                 navigator.geolocation.getCurrentPosition(async pos => {
                     const res = await fetch(`/api/weather?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
                     const data = await res.json();
-                    setWeather(`${data.weather[0].description}, ${data.main.temp}°C`);
+                    setWeather(`${data.daily.data[0].summary}, ${data.daily.data[0].all_day.temperature}°C`);
 
                     // Ask backend to fantasy-transform
                     const fantasyRes = await fetch(`/api/fantasy`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ description: data.weather[0].description, temp: data.main.temp })
+                        body: JSON.stringify({ description: data.daily.data[0].summary, maxTemp: data.daily.data[0].all_day.temperature_max, minTemp: data.daily.data[0].all_day.temperature_min })
                     });
                     const fantasy = await fantasyRes.json();
 
